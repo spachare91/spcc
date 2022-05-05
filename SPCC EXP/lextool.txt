@@ -1,0 +1,51 @@
+%{
+#define NUM 1
+%}
+
+%%
+[0-9]+\.[0-9]+|[0-9]+ {return NUM;}
+int|char|bool|void {return 2;}
+[a-zA-Z]+[a-zA-Z0-9]* {return 3;}
+%%
+
+#include<stdio.h>
+int main(int argc, char *argv[]){
+  int val;
+
+  while(val=yylex()){
+    switch(val){
+      case 1:
+        printf("\n%s-Number", yytext);
+        break;
+      case 2:
+        printf("\n%s-Keyword", yytext);
+        break;
+      case 3:
+        printf("\n%s-Identifier", yytext);
+        break;
+    }
+  }
+
+  return 0;
+} 
+
+
+
+//commands
+
+
+SPCC/expt8$ lex lex.l
+SPCC/expt8$ cc lex.yy.c -o a.out -ll
+SPCC/expt8$ ./a.out
+4.5
+
+4.5-Number
+12.5
+
+12.5-Number
+int
+
+int-Keyword
+abc
+
+abc-Identifier
